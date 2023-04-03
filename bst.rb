@@ -163,6 +163,15 @@ class Tree
     return level
   end
 
+  def balanced?(node = root)
+    return true if node.nil?
+    puts "height left"
+    puts height(node.left)
+    puts "height right"
+    puts height(node.right)
+    balanced?(node.left) && balanced?(node.right) && (height(node.left) - height(node.right)).abs <= 1
+  end
+
   def rebalance
     arr = self.inorder
     self.root = build_tree(arr)
@@ -199,36 +208,9 @@ test.pretty_print
 test.delete(4)
 test.pretty_print
 
-test.level_order { |elem| puts elem.value * 2 }
+puts test.balanced?
 
-x = test.level_order
-pp x
-
-pp test.find(100)
-
-pp test.inorder
-
-test.inorder { |elem| puts elem.value }
-
-pp test.preorder
-
-test.preorder { |elem| puts elem.value }
-
-pp test.postorder
-
-test.postorder { |elem| puts elem.value }
-
-puts "height of tree is: "
-puts test.height(test.root)
-
-puts "height of node 2:"
-puts test.height(test.root.left)
-
-puts "depth of root: "
-puts test.depth(test.root)
-
-puts "depth of node 3:"
-puts test.depth(test.root.left.right)
-
-puts "depth of node 2:"
-puts test.depth(test.root.left)
+puts "PROBLEM CASE"
+test2 = Tree.new([1,2,3])
+test2.pretty_print
+puts test2.balanced?
