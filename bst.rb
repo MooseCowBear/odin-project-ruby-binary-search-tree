@@ -139,6 +139,20 @@ class Tree
     arr << node.value
   end
 
+  def height(node = root) 
+    return 0 if node.nil?
+
+    left_height = height(node.left)
+    right_height = height(node.right)
+
+    return [left_height, right_height].max + 1    
+  end
+
+  def rebalance
+    arr = self.inorder
+    self.root = build_tree(arr)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -188,3 +202,9 @@ test.preorder { |elem| puts elem.value }
 pp test.postorder
 
 test.postorder { |elem| puts elem.value }
+
+puts "height is: "
+puts test.height
+
+puts "height of node 2:"
+puts test.height(test.root.left)
