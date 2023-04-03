@@ -130,6 +130,15 @@ class Tree
     arr = preorder(node.right, arr, &block)
   end
 
+  def postorder(node = root, arr = [], &block)
+    return arr if node.nil?
+
+    arr = postorder(node.left, arr, &block)
+    arr = postorder(node.right, arr, &block)
+    block.call(node) if block_given?
+    arr << node.value
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -175,3 +184,7 @@ test.inorder { |elem| puts elem.value }
 pp test.preorder
 
 test.preorder { |elem| puts elem.value }
+
+pp test.postorder
+
+test.postorder { |elem| puts elem.value }
