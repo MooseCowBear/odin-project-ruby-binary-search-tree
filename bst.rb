@@ -108,6 +108,19 @@ class Tree
     return arr unless block_given?
   end
 
+  def level_order_rec
+
+  end
+
+  def inorder(node = root, arr = [], &block)
+      return arr if node.nil? 
+
+      arr = inorder(node.left, arr, &block)
+      block.call(node) if block_given?
+      arr << node.value 
+      arr = inorder(node.right, arr, &block)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -143,3 +156,9 @@ test.level_order { |elem| puts elem.value * 2 }
 
 x = test.level_order
 pp x
+
+pp test.find(100)
+
+pp test.inorder
+
+test.inorder { |elem| puts elem.value }
