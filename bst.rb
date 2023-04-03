@@ -19,6 +19,8 @@ class Tree
     @root = build_tree(arr)
   end
 
+  attr_accessor :root
+
   def build_tree(arr)
     arr = arr.uniq.sort
     return nil if arr.length == 0
@@ -32,6 +34,19 @@ class Tree
     return root
   end
 
+  def insert(value)
+    #need to find the first place the value will go
+
+  end
+
+  def find(value, node = root) #but then doesn't apply to root.right...bc its a node not a tree
+    return node if node.nil? || node.value == value
+
+    return find(value, node.right) if node.value < value
+
+    return find(value, node.left)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -41,3 +56,7 @@ end
 
 test = Tree.new([1, 2, 3, 4, 5, 6])
 test.pretty_print
+
+found = test.find(2)
+puts found.left.value
+puts found.right.value
