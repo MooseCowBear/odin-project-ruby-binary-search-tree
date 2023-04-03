@@ -12,6 +12,16 @@ class Node
   def <=>(other)
       value <=> other.value
   end
+
+  def find_min_descendant_node
+    curr = self
+
+    until curr.left.nil?
+      curr = curr.left
+    end
+
+    curr
+  end
 end
 
 class Tree
@@ -52,6 +62,10 @@ class Tree
       end
       node
     end
+  end
+
+  def delete(value)
+
   end
 
   def find(value, node = root) #but then doesn't apply to root.right...bc its a node not a tree
@@ -96,3 +110,5 @@ test2.insert(3)
 test2.pretty_print
 test2.insert(5)
 test2.pretty_print
+
+puts test.root.find_min_descendant_node.value
