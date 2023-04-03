@@ -34,9 +34,24 @@ class Tree
     return root
   end
 
-  def insert(value)
+  def insert(value, node = root)
     #need to find the first place the value will go
-
+    if node.nil? 
+      new_node = Node.new(value)
+      if root.nil? 
+        self.root = new_node
+      end
+      new_node #do we need this?
+    else
+      if node.value == value
+        return node
+      elsif node.value < value
+        node.right = insert(value, node.right)
+      else 
+        node.left = insert(value, node.left)
+      end
+      node
+    end
   end
 
   def find(value, node = root) #but then doesn't apply to root.right...bc its a node not a tree
@@ -60,3 +75,24 @@ test.pretty_print
 found = test.find(2)
 puts found.left.value
 puts found.right.value
+
+test.insert(8)
+test.pretty_print
+
+test.insert(7)
+test.pretty_print
+
+test.insert(0)
+test.pretty_print
+
+test.insert(2)
+test.pretty_print
+
+test2 = Tree.new([])
+
+test2.insert(1)
+test2.pretty_print
+test2.insert(3)
+test2.pretty_print
+test2.insert(5)
+test2.pretty_print
