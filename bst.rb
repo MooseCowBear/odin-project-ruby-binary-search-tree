@@ -139,13 +139,28 @@ class Tree
     arr << node.value
   end
 
-  def height(node = root) 
-    return 0 if node.nil?
+  def height(node) 
+    return -1 if node.nil?
 
     left_height = height(node.left)
     right_height = height(node.right)
 
     return [left_height, right_height].max + 1    
+  end
+
+  def depth(node) 
+    return 0 if node.value == root.value
+    level = 0
+    curr = root
+    until node.value == curr.value
+      level += 1
+      if node.value < curr.value
+        curr = curr.left
+      else 
+        curr = curr.right
+      end
+    end
+    return level
   end
 
   def rebalance
@@ -203,8 +218,17 @@ pp test.postorder
 
 test.postorder { |elem| puts elem.value }
 
-puts "height is: "
-puts test.height
+puts "height of tree is: "
+puts test.height(test.root)
 
 puts "height of node 2:"
 puts test.height(test.root.left)
+
+puts "depth of root: "
+puts test.depth(test.root)
+
+puts "depth of node 3:"
+puts test.depth(test.root.left.right)
+
+puts "depth of node 2:"
+puts test.depth(test.root.left)
