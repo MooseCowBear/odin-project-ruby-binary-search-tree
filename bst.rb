@@ -64,8 +64,26 @@ class Tree
     end
   end
 
-  def delete(value)
+  def delete(value, node = root)
+    return node if node.nil? 
 
+    if value < node.value
+      node.left = delete(value, node.left)
+    elsif value > node.value
+      node.right = delete(value, node.right)
+    else
+      if node.left.nil?
+        temp, node = node.right, nil
+        return temp
+      elsif node.right.nil?
+        temp, node = node.left, nil
+        return temp
+      end
+      temp = node.right.find_min_descendant_node
+      node.value = temp.value
+      node.right = delete(temp.value, node.right)
+    end
+    return node
   end
 
   def find(value, node = root) #but then doesn't apply to root.right...bc its a node not a tree
@@ -84,31 +102,25 @@ class Tree
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6])
-test.pretty_print
 
 found = test.find(2)
 puts found.left.value
 puts found.right.value
 
 test.insert(8)
-test.pretty_print
 
 test.insert(7)
-test.pretty_print
 
 test.insert(0)
-test.pretty_print
 
 test.insert(2)
 test.pretty_print
 
-test2 = Tree.new([])
+test.delete(8)
+test.pretty_print
 
-test2.insert(1)
-test2.pretty_print
-test2.insert(3)
-test2.pretty_print
-test2.insert(5)
-test2.pretty_print
+test.delete(5)
+test.pretty_print
 
-puts test.root.find_min_descendant_node.value
+test.delete(4)
+test.pretty_print
