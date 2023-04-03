@@ -1,28 +1,4 @@
-class Node
-  include Comparable
-  
-  def initialize(value)
-    @value = value
-    @left = left
-    @right = right
-  end
-
-  attr_accessor :value, :left, :right
-
-  def <=>(other)
-      value <=> other.value
-  end
-
-  def find_min_descendant_node
-    curr = self
-
-    until curr.left.nil?
-      curr = curr.left
-    end
-
-    curr
-  end
-end
+require_relative './node.rb'
 
 class Tree
   def initialize(arr)
@@ -86,7 +62,7 @@ class Tree
     return node
   end
 
-  def find(value, node = root) #but then doesn't apply to root.right...bc its a node not a tree
+  def find(value, node = root) 
     return node if node.nil? || node.value == value
 
     return find(value, node.right) if node.value < value
@@ -109,7 +85,10 @@ class Tree
   end
 
   def level_order_rec
+    height = height(root)
+    1.upto(height) do |i|
 
+    end
   end
 
   def inorder(node = root, arr = [], &block)
@@ -150,10 +129,12 @@ class Tree
 
   def depth(node) 
     return 0 if node.value == root.value
+
     level = 0
     curr = root
     until node.value == curr.value
       level += 1
+
       if node.value < curr.value
         curr = curr.left
       else 
@@ -181,7 +162,7 @@ class Tree
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6])
-
+test.pretty_print
 found = test.find(2)
 puts found.left.value
 puts found.right.value
@@ -206,7 +187,10 @@ test.pretty_print
 
 puts test.balanced?
 
-puts "PROBLEM CASE"
 test2 = Tree.new([1,2,3])
 test2.pretty_print
 puts test2.balanced?
+
+puts "After rebalance"
+test.rebalance
+test.pretty_print
