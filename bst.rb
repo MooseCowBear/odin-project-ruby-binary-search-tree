@@ -165,10 +165,6 @@ class Tree
 
   def balanced?(node = root)
     return true if node.nil?
-    puts "height left"
-    puts height(node.left)
-    puts "height right"
-    puts height(node.right)
     balanced?(node.left) && balanced?(node.right) && (height(node.left) - height(node.right)).abs <= 1
   end
 
