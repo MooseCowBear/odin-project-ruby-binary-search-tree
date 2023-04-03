@@ -27,7 +27,7 @@ class Tree
       if root.nil? 
         self.root = new_node
       end
-      new_node #do we need this?
+      new_node 
     else
       if node.value == value
         return node
@@ -84,10 +84,38 @@ class Tree
     return arr unless block_given?
   end
 
-  def level_order_rec
-    height = height(root)
-    1.upto(height) do |i|
+  def level_order_rec(node = root, arr = [], &block)
+    return arr if node.nil?
+    height = height(node)
+    1.upto(height + 1) do |i|
+      curr_level(node, arr, i, &block)
+    end
+    return arr unless block_given?
+  end
 
+  def curr_level(node = root, arr = [], level, &block)
+    return arr if node.nil? 
+    if level == 1
+      yield node if block_given? 
+      arr << node.value unless block_given? 
+    elsif level > 1
+      curr_level(node.left, arr, level - 1, &block)
+      curr_level(node.right, arr, level - 1, &block)
+    end
+  end
+
+  def level_order_test(node = root)
+    1.upto(height) do |i|
+      curr_level_test(node, arr, i, &block)
+    end
+  end
+
+  def curr_level_test(node, level)
+    return if node.nil?
+    if level == 1
+      puts node.value
+    elsif level > 1
+      return
     end
   end
 
@@ -160,37 +188,3 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
-
-test = Tree.new([1, 2, 3, 4, 5, 6])
-test.pretty_print
-found = test.find(2)
-puts found.left.value
-puts found.right.value
-
-test.insert(8)
-
-test.insert(7)
-
-test.insert(0)
-
-test.insert(2)
-test.pretty_print
-
-test.delete(8)
-test.pretty_print
-
-test.delete(5)
-test.pretty_print
-
-test.delete(4)
-test.pretty_print
-
-puts test.balanced?
-
-test2 = Tree.new([1,2,3])
-test2.pretty_print
-puts test2.balanced?
-
-puts "After rebalance"
-test.rebalance
-test.pretty_print
