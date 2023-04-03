@@ -94,6 +94,20 @@ class Tree
     return find(value, node.left)
   end
 
+  def level_order
+    q = []
+    arr = []
+    q << root unless root.nil?
+    while q.length > 0
+      curr = q.shift
+      q << curr.left unless curr.left.nil? 
+      q << curr.right unless curr.right.nil?
+      yield curr if block_given?
+      arr << curr.value unless block_given?
+    end
+    return arr unless block_given?
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -124,3 +138,8 @@ test.pretty_print
 
 test.delete(4)
 test.pretty_print
+
+test.level_order { |elem| puts elem.value * 2 }
+
+x = test.level_order
+pp x
